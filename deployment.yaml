@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tinyurl-deployment
+spec:
+  replicas: 1  # Start with 1 pod
+  selector:
+    matchLabels:
+      app: tinyurl
+  template:
+    metadata:
+      labels:
+        app: tinyurl
+    spec:
+      containers:
+        - name: tinyurl
+          image: tinyurl-service:latest  # Or localhost:5000/tinyurl-service:latest for local registry
+          imagePullPolicy: Never  # For local builds
+          ports:
+            - containerPort: 8080

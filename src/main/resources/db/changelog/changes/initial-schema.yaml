@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-short-urls-table
+      author: gangadhar
+      changes:
+        - createTable:
+            tableName: short_urls
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: target_url
+                  type: varchar(2048)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expires_at
+                  type: timestamp
+              - column:
+                  name: hits
+                  type: bigint
+                  defaultValue: 0
+              - column:
+                  name: last_accessed_at
+                  type: timestamp
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 002-add-index-on-code
+      author: gangadhar
+      changes:
+        - createIndex:
+            tableName: short_urls
+            indexName: idx_code_unique
+            unique: true
+            columns:
+              - column:
+                  name: code
