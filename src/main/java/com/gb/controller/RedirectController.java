@@ -3,6 +3,7 @@ package com.gb.controller;
 import com.gb.entity.ShortUrl;
 import com.gb.service.UrlService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +14,14 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class RedirectController {
 
     private final UrlService service;
 
     @GetMapping("/{code}")
     public ResponseEntity<Void> redirect(@PathVariable String code) {
+        log.info("Redirecting to url");
         Optional<ShortUrl> optionalUrl = service.lookupActive(code);
         if (optionalUrl.isPresent()) {
             ShortUrl url = optionalUrl.get();
